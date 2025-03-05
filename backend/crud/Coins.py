@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from models.moneda import Moneda
-from schemas.moneda import MonedaCreate
+from models.Coins import Moneda
+from schemas.Coins import MonedaCreate
 
 def obtener_monedas(db: Session):
     return db.query(Moneda).all()

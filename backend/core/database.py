@@ -6,7 +6,9 @@ from dotenv import load_dotenv
 # Cargar variables de entorno
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://quantum_admin:quantum_secret@localhost:5432/quantumpay_db")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+print(DATABASE_URL)
 
 # Configuración de SQLAlchemy
 engine = create_engine(DATABASE_URL)

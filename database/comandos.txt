@@ -10,4 +10,6 @@ docker exec -it quantumpay_postgres psql -U quantum_admin -d quantumpay_db
 
 
 venv\Scripts\activate
+.venv\Scripts\activate
+
 
