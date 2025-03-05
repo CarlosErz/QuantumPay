@@ -1,0 +1,13 @@
+#Levantar el contenedor 
+
+docker-compose up -d
+
+#Verificar contenedores 
+docker ps
+
+#Conectar a posgres 
+docker exec -it quantumpay_postgres psql -U quantum_admin -d quantumpay_db
+
+
+venv\Scripts\activate
+
