@@ -13,3 +13,9 @@ venv\Scripts\activate
 .venv\Scripts\activate
 
 
+UPDATE dbname
+SET rol = 'admin'  -- Cambia 'admin' por el rol que necesites
+WHERE id = 1;  -- Reemplaza id por el id del usuario
+
+
+
