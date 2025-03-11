@@ -8,7 +8,6 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-print(DATABASE_URL)
 
 # Configuración de SQLAlchemy
 engine = create_engine(DATABASE_URL)

@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 from core.database import get_db  
 from models.Coins import Moneda  
+from core.config import MONEDAS_A_PAISES
 from schemas.Coins import MonedaOut, MonedaCreate  
 from crud.Coins import obtener_monedas, obtener_moneda, agregar_moneda, eliminar_moneda  
 from core.auth import get_current_user, verificar_admin
@@ -59,32 +60,41 @@ def actualizar_tasas(db: Session = Depends(get_db), user=Depends(verificar_admin
     if not tasas:
         raise HTTPException(status_code=500, detail="No se encontraron tasas en la API externa")
 
-    # Verificar si la base de datos ya tiene monedas
-    monedas_existentes = {moneda.simbolo for moneda in db.query(Moneda).all()}
-
     monedas_actualizadas = 0
     monedas_creadas = 0
 
     for simbolo, tasa in tasas.items():
-        if simbolo in monedas_existentes:
-            # Si la moneda ya existe, solo actualizar su tasa de cambio
-            moneda = db.query(Moneda).filter(Moneda.simbolo == simbolo).first()
-            moneda.valor_usd = tasa
-            moneda.ultima_actualizacion = datetime.utcnow()
+        nombre_pais = MONEDAS_A_PAISES.get(simbolo, simbolo)  # Obtener el nombre del país o usar el código si no está
+
+        # Verificar si la moneda ya existe en la base de datos por nombre o símbolo
+        moneda_existente = db.query(Moneda).filter(
+            (Moneda.simbolo == simbolo) | (Moneda.nombre == nombre_pais)
+        ).first()
+
+        if moneda_existente:
+            # Si la moneda ya existe, actualizar su tasa de conversión y fecha
+            moneda_existente.valor_usd = tasa
+            moneda_existente.ultima_actualizacion = datetime.utcnow()
+            moneda_existente.nombre = nombre_pais  # Asegurar que el nombre sea correcto
             monedas_actualizadas += 1
         else:
-            # Si la moneda no existe, agregarla automáticamente
-            nueva_moneda = Moneda(
-                nombre=simbolo,  # En la API no hay nombre, usamos el símbolo temporalmente
-                simbolo=simbolo,
-                valor_usd=tasa,
-                ultima_actualizacion=datetime.utcnow()
-            )
-            db.add(nueva_moneda)
-            monedas_creadas += 1
+            try:
+                # Si la moneda no existe, agregarla automáticamente
+                nueva_moneda = Moneda(
+                    nombre=nombre_pais,
+                    simbolo=simbolo,
+                    valor_usd=tasa,
+                    ultima_actualizacion=datetime.utcnow()
+                )
+                db.add(nueva_moneda)
+                db.commit()  # Confirmar inserción inmediatamente para evitar duplicados
+                monedas_creadas += 1
+            except Exception as e:
+                db.rollback()  # Revertir si hay un error para evitar que falle toda la transacción
+                print(f"Error al insertar moneda {nombre_pais}: {e}")
 
     db.commit()
-    
+
     return {
         "mensaje": "Tasas de cambio actualizadas exitosamente",
         "monedas_actualizadas": monedas_actualizadas,

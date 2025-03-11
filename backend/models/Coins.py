@@ -3,7 +3,7 @@ from datetime import datetime
 from core.database import Base
 
 class Moneda(Base):
-    __tablename__ = "monedas"
+    __tablename__ = "coins"
 
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String, unique=True, nullable=False)
