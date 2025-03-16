@@ -75,7 +75,6 @@ export const login = async (username, password) => {
         }
 
         const data = await response.json();
-        console.log("Token recibido:", data.access_token);
 
         // Guardar el token en localStorage
         localStorage.setItem("token", data.access_token);
@@ -98,7 +97,8 @@ export const login = async (username, password) => {
 // services/api.js
 export const updateTasas = async () => {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://127.0.0.1:8000/actualizar-tasas", {
+    const response = await fetch(
+        `${API_URL}/actualizar-tasas`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
