@@ -39,11 +39,15 @@ export default function CurrencyConverter() {
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
+        <div className="ml-64 flex items-center justify-center min-h-screen p-6 bg-gray-900 text-white flex-col gap-10 ">
+            <h1 className="text-center  font-bold text-5xl">
+                QUANTUM<span className="text-cyan-400">PAY</span>
+            </h1>
             <div className="max-w-lg p-6 bg-gray-900 rounded-lg shadow-lg border border-cyan-500 text-white">
                 <h2 className="text-3xl font-semibold text-cyan-400 text-center mb-4">Conversor de Moneda</h2>
 
                 {/* Entrada de Monto */}
+
                 <div className="mb-4">
                     <label className="block text-gray-400 text-sm font-medium">Monto</label>
                     <input

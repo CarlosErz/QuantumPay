@@ -1,4 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+import { decodeToken } from "./utils";
 
 /**
  * Función genérica para hacer peticiones a la API con manejo de autenticación.
@@ -24,7 +25,7 @@ export const apiRequest = async (endpoint, method = "GET", body = null) => {
 
     if (body) {
         options.body = JSON.stringify(body);
-        console.log(body)
+        console.log(body);
     }
 
     try {
@@ -78,10 +79,37 @@ export const login = async (username, password) => {
 
         // Guardar el token en localStorage
         localStorage.setItem("token", data.access_token);
+        localStorage.setItem("user", data.username)
 
-        return data;
+        // Decodificar el token para obtener el rol
+        const decodedToken = decodeToken(data.access_token);
+        const isAdmin = decodedToken && decodedToken.sub === "admin"; // Ajusta según tu token
+
+        localStorage.setItem("isAdmin", isAdmin);
+
+        return { isAdmin };
     } catch (error) {
         console.error("Error al iniciar sesión:", error);
         return null;
     }
+};
+
+
+// services/api.js
+export const updateTasas = async () => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://127.0.0.1:8000/actualizar-tasas", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Error actualizando las tasas");
+    }
+
+    // Retornamos el JSON que contiene "mensaje", "monedas_actualizadas", etc.
+    return await response.json();
 };
