@@ -1,18 +1,24 @@
 # QuantumPay 🏦💰
 ### API para Gestión y Conversión de Monedas
 
-QuantumPay es un sistema basado en **FastAPI y PostgreSQL** que permite la gestión de monedas y la actualización automática de tasas de cambio desde una API externa. Además, implementa autenticación con **JWT** para proteger las rutas administrativas.
+
+QuantumPay es un sistema completo basado en **FastAPI**, **PostgreSQL**, **React + Vite**, y automatizado para instalarse fácilmente en cualquier PC con scripts `.bat` o un **instalador `.exe` profesional**.
 
 ---
 
 ## 🚀 Características Principales
-✅ **Gestión de Monedas:** Agregar, listar y eliminar monedas en la base de datos.  
-✅ **Tasas de Cambio Automáticas:** Actualización desde API externa en tiempo real.  
-✅ **Autenticación JWT:** Registro e inicio de sesión de usuarios.  
-✅ **Autorización:** Solo administradores pueden agregar o eliminar monedas.  
-✅ **Documentación Swagger UI:** Disponible en `/docs`.  
 
----
+- ✅ CRUD de monedas
+- 🔁 Tasas de cambio automáticas vía API externa
+- 🔐 Autenticación y autorización con JWT
+- 🌐 Frontend en React + Vite
+- 🐳 Base de datos en PostgreSQL vía Docker
+- ⚙️ Scripts de instalación y menú en batch
+- 📦 Instalador `.exe` con Inno Setup
+
+![Vista de QuantumPay](docs/quantum-ui.png)
+
+
 
 ## 📁 **Estructura del Proyecto**
 ```
@@ -25,12 +31,12 @@ QuantumPay es un sistema basado en **FastAPI y PostgreSQL** que permite la gesti
  │   ├── 📂 schemas      # Esquemas de validación (Pydantic)
  │   ├── 📂 crud         # Operaciones CRUD en la base de datos
  │   ├── 📂 routes       # Endpoints de FastAPI
+ ├── ├──.env 
  │   ├── main.py         # Punto de entrada FastAPI
  │   ├── requirements.txt # Dependencias del backend
  ├── 📂 database
  │   ├── docker-compose.yml # Configuración Docker de PostgreSQL
- ├── 📂 frontend (pendiente)
- ├── .env                # Variables de entorno
+ ├── 📂 frontend (pendiente)               # Variables de entorno
  ├── README.md            # Documentación del proyecto
 ```
 
@@ -142,6 +148,19 @@ docker-compose -f database/docker-compose.yml up --build -d
 ```
 
 ---
+### 🔹 Opción 2: Usar el instalador `.exe`
+
+1. Ejecuta `QuantumPayInstaller.exe`
+2. Sigue el asistente
+3. ¡Listo! Usa el menú para gestionar el sistema
+
+---
+
+## 🧩 Scripts `.bat`
+
+- `install_app.bat`: instala dependencias de backend, frontend y levanta la base de datos
+- `start_app.bat`: inicia base de datos, backend y frontend
+- `menu.bat`: acceso interactivo tipo consola con opciones
 
 ## 📜 **6. Licencia**
 Este proyecto está bajo la **Licencia MIT**.
